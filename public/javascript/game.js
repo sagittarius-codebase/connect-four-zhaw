@@ -47,3 +47,8 @@ function elt(type, attrs, ...children) {
 
     return node;
 }
+
+// Function to initialize the board on page load
+document.addEventListener('DOMContentLoaded', () => {
+    showBoard();
+});
