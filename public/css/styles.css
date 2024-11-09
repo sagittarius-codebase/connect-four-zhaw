@@ -1,0 +1,36 @@
+div {
+    box-sizing: border-box;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin: auto;
+    outline: 1px solid black;
+    width: 84vw;
+}
+
+.board .field {
+    border: 1px solid black;
+    height: 12vw;
+    width: 12vw;
+}
+
+.board .field:first-child {
+    display: block;
+}
+
+.board .field .piece {
+    border-radius: 50%;
+    height: 10vw;
+    margin: 1vw;
+    width: 10vw;
+}
+
+.board .field .blue {
+    background-color: blue;
+}
+
+.board .field .red {
+    background-color: red;
+}
