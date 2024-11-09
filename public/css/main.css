@@ -3,11 +3,15 @@ div {
 }
 
 .board {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    display: flex;
+    flex-direction: column;
     margin: auto;
     outline: 1px solid black;
     width: 84vw;
+}
+
+.board .row {
+    display: flex;
 }
 
 .board .field {
