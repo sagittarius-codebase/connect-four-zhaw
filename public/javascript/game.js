@@ -1,23 +1,30 @@
+
+// The game state
+let state = {
+    board: Array(6).fill(null).map(() => Array(7).fill(''))
+};
+
+
 /**
  * This function is used to show the current state of the board.
  * It calls the elt function to create new elements and append them to the board element.
  */
 function showBoard() {
     const boardElement = document.getElementById("board");
-    const rows = 6;
-    const cols = 7;
+    boardElement.innerHTML = ""; // Clear existing board
 
-    // Create the board
-    for (let row = 0; row < rows; row++) {
+    // Loop through the board state to create cells
+    state.board.forEach((row) => {
         let rowDiv = elt("div", {class: "row"});
 
-        for (let col = 0; col < cols; col++) {
-            let cell = elt("div", {class: "field"});
-            rowDiv.appendChild(cell);
-        }
+        row.forEach((cell) => {
+            let cellDiv = elt("div", {class: "field"});
+            cellDiv.textContent = cell;
+            rowDiv.appendChild(cellDiv);
+        });
 
         boardElement.appendChild(rowDiv);
-    }
+    });
 }
 
 /**
