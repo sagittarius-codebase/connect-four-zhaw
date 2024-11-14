@@ -68,30 +68,4 @@ function elt(type, attrs, ...children) {
 // Function to initialize the board on page load
 document.addEventListener('DOMContentLoaded', () => {
     showBoard();
-    testBoard();
 });
-
-
-/**
- * This function tests the board by randomly placing or deleting a piece in field.
- * It then shows the updated board.
- * It starts, when the site is loaded and runs forever and places or deletes a piece every 1 second.
- *
- */
-function testBoard() {
-    setInterval(() => {
-        let row = Math.floor(Math.random() * 6);
-        let col = Math.floor(Math.random() * 7);
-
-        if (state.board[row][col] === '') {
-            // random color: red or blue
-            state.board[row][col] = Math.random() < 0.5 ? 'r' : 'b';
-        } else {
-            state.board[row][col] = '';
-        }
-
-        console.log(state.board);
-
-        showBoard();
-    }, 100);
-}
