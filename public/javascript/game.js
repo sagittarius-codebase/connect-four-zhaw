@@ -123,8 +123,71 @@ function getHighestEmptyRow(colIndex) {
     return -1;
 }
 
+/**
+ * This function is used to apply the fall animation to a piece in the board.
+ * It sets the animation delay based on the row index and the adjusted delay.
+ * Delay is calculated based on the row index and the adjusted delay. -> pieces at the bottom fall first
+ * 
+ * @param pieces
+ * @param colIndex
+ * @param rowIndex
+ * @param adjustedDelay
+ */
+function applyFallAnimation(pieces, colIndex, rowIndex, adjustedDelay) {
+    const piece = pieces[rowIndex]?.[colIndex];
+    if (piece) {
+        const rowDelay = (5 - rowIndex) * 50;
+        const totalDelay = adjustedDelay + rowDelay;
+
+        piece.style.animationDelay = `${totalDelay}ms`;
+        piece.classList.add('piece-fall-out');
+    }
+}
+
+/**
+ * This function is used to handle the click event on the new game button.
+ * It loops through the board state and applies the fall animation to each piece in the board.
+ * It then resets the board state and shows the board after the longest animation finishes.
+ */
+function handleNewGameClick() {
+    const boardElement = document.getElementById("board");
+    const pieces = Array.from(boardElement.children).map(row => Array.from(row.children).map(cell => cell.querySelector('.piece')));
+
+    // Disable all clicks and prevent scrolling during the animation
+    boardElement.classList.add('disable-clicks');
+    document.body.style.overflow = 'hidden';
+
+    let adjustedDelay = 0;
+
+    // Skip leading empty columns
+    for (let colIndex = 0; colIndex < 7; colIndex++) {
+        const columnHasPieces = pieces.some(row => row[colIndex]);
+        if (!columnHasPieces) continue;
+        
+        // Apply fall animation to each piece in the column
+        for (let rowIndex = 5; rowIndex >= 0; rowIndex--) {
+            applyFallAnimation(pieces, colIndex, rowIndex, adjustedDelay);
+        }
+        adjustedDelay += 100;
+    }
+
+    // Wait for the longest animation to finish before resetting the board
+    const animationDuration = 1000 + adjustedDelay ;
+    setTimeout(() => {
+        state.board = Array(6).fill(null).map(() => Array(7).fill(''));
+        state.currentPlayerIndex = 1;
+        showBoard();
+
+        boardElement.classList.remove('disable-clicks');
+        document.body.style.overflow = '';
+    }, animationDuration);
+}
+
 
 // Function to initialize the board on page load
 document.addEventListener('DOMContentLoaded', () => {
     showBoard();
+    
+    const newGameButton = document.getElementById("newGame");
+    newGameButton.addEventListener('click', () => handleNewGameClick());
 });

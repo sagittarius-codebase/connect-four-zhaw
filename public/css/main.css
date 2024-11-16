@@ -107,3 +107,23 @@ body {
 }
 
 
+@keyframes fall-out {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* Apply the fall-out animation to the pieces */
+.piece-fall-out {
+    animation: fall-out 0.7s ease-in forwards;
+}
+
+.disable-clicks {
+    pointer-events: none;
+}
+
