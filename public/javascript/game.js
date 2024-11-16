@@ -55,19 +55,8 @@ function updateCell(rowIndex, colIndex) {
 
     const cell = state.board[rowIndex][colIndex];
     if (cell) {
-
-        const maxRows = state.board.length;
-        const fallDuration = (maxRows - rowIndex) * 0.1 + 0.2;
-
-
         const pieceDiv = elt("div", {class: `piece player${cell.id} piece-fall` });
         cellElement.appendChild(pieceDiv);
-
-        cellElement.style.pointerEvents = 'none';
-        
-        setTimeout(() => {
-            cellElement.style.pointerEvents = '';
-        }, 500);
     }
 }
 
