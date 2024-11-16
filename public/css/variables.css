@@ -7,11 +7,19 @@
     --color-player-two-dark: #cc5b0d;
     --color-player-two-light: #ffa64d;
 
+    --color-button: transparent;
+    --color-button-border: #1e70cc;
+    --color-button-text: #BBBBBB;
+    --color-button-hover: #1e70cc;
+    --color-button-hover-shadow: #4fa6f755;
+    --color-button-hover-text: #101010;
+
+
     /* Number of rows */
     --number-rows: 7;
 
     /* Sizes */
-    --board-size: 56vw;
+    --board-size: 50vw;
     --field-size: calc(var(--board-size) / var(--number-rows));
     --piece-size: calc(var(--field-size) - 1.5vw);
     --size-piece-margin: calc((var(--field-size) - var(--piece-size)) / 2);
