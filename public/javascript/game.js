@@ -103,8 +103,10 @@ function handleCellClick(rowIndex, colIndex) {
     
     if (highestEmptyRow !== -1) {
         state.board[highestEmptyRow][colIndex] = state.players[state.currentPlayerIndex];
-        state.currentPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
         updateCell(highestEmptyRow, colIndex)
+
+        state.currentPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
+        updateActivePlayer();
     }
 }
 
@@ -145,17 +147,14 @@ function applyFallAnimation(pieces, colIndex, rowIndex, adjustedDelay) {
 }
 
 /**
- * This function is used to handle the click event on the new game button.
+ * This function is used to empty the board by applying the fall animation to each piece in the board.
  * It loops through the board state and applies the fall animation to each piece in the board.
- * It then resets the board state and shows the board after the longest animation finishes.
+ * 
+ * @param boardElement
+ * @returns {number}
  */
-function handleNewGameClick() {
-    const boardElement = document.getElementById("board");
+function emptyBoard(boardElement) {
     const pieces = Array.from(boardElement.children).map(row => Array.from(row.children).map(cell => cell.querySelector('.piece')));
-
-    // Disable all clicks and prevent scrolling during the animation
-    boardElement.classList.add('disable-clicks');
-    document.body.style.overflow = 'hidden';
 
     let adjustedDelay = 0;
 
@@ -163,13 +162,29 @@ function handleNewGameClick() {
     for (let colIndex = 0; colIndex < 7; colIndex++) {
         const columnHasPieces = pieces.some(row => row[colIndex]);
         if (!columnHasPieces) continue;
-        
+
         // Apply fall animation to each piece in the column
         for (let rowIndex = 5; rowIndex >= 0; rowIndex--) {
             applyFallAnimation(pieces, colIndex, rowIndex, adjustedDelay);
         }
         adjustedDelay += 100;
     }
+    return adjustedDelay;
+}
+
+/**
+ * This function is used to handle the click event on the new game button.
+ * It empties the board and resets the board state to start a new game.
+ * It also updates the active player to the first player.
+ */
+function handleNewGameClick() {
+    const boardElement = document.getElementById("board");
+
+    // Disable all clicks and prevent scrolling during the animation
+    boardElement.classList.add('disable-clicks');
+    document.body.style.overflow = 'hidden';
+    
+    let adjustedDelay = emptyBoard(boardElement);
 
     // Wait for the longest animation to finish before resetting the board
     const animationDuration = 1000 + adjustedDelay ;
@@ -177,16 +192,46 @@ function handleNewGameClick() {
         state.board = Array(6).fill(null).map(() => Array(7).fill(''));
         state.currentPlayerIndex = 1;
         showBoard();
+        updateActivePlayer();
 
         boardElement.classList.remove('disable-clicks');
         document.body.style.overflow = '';
     }, animationDuration);
 }
 
+/**
+ * This function is used to update the scoreboard based on the current player index.
+ * It basically swaps the active class between the player elements.
+ */
+function updateActivePlayer() {
+    const player1Name = document.querySelector('#player1 .player-name');
+    const player2Name = document.querySelector('#player2 .player-name');
+
+    // Reset styles for both players
+    player1Name.classList.remove('active');
+    player2Name.classList.remove('active');
+    player1Name.style.backgroundColor = '';
+    player2Name.style.backgroundColor = '';
+    player1Name.style.color = '';
+    player2Name.style.color = '';
+
+    // Set the active player
+    if (state.currentPlayerIndex === 0) {
+        player1Name.classList.add('active');
+        player1Name.style.backgroundColor = 'var(--color-player-one-light)';
+        player1Name.style.color = 'black';
+    } else {
+        player2Name.classList.add('active');
+        player2Name.style.backgroundColor = 'var(--color-player-two-light)';
+        player2Name.style.color = 'black';
+    }
+}
+
 
 // Function to initialize the board on page load
 document.addEventListener('DOMContentLoaded', () => {
     showBoard();
+    updateActivePlayer();
     
     const newGameButton = document.getElementById("newGame");
     newGameButton.addEventListener('click', () => handleNewGameClick());
