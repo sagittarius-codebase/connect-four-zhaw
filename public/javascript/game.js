@@ -43,6 +43,36 @@ function showBoard() {
 }
 
 /**
+ * only updates given cell instead of updating the whole board -> performance improvement
+ * 
+ * @param rowIndex
+ * @param colIndex
+ */
+function updateCell(rowIndex, colIndex) {
+    const boardElement = document.getElementById("board");
+    const rowElement = boardElement.children[rowIndex];
+    const cellElement = rowElement.children[colIndex];
+
+    const cell = state.board[rowIndex][colIndex];
+    if (cell) {
+
+        const maxRows = state.board.length;
+        const fallDuration = (maxRows - rowIndex) * 0.1 + 0.2;
+
+
+        const pieceDiv = elt("div", {class: `piece player${cell.id} piece-fall` });
+        cellElement.appendChild(pieceDiv);
+
+        cellElement.style.pointerEvents = 'none';
+        
+        setTimeout(() => {
+            cellElement.style.pointerEvents = '';
+        }, 500);
+    }
+}
+
+
+/**
  * This function is used to create a new element with the given type, attributes and children.
  *
  * @param {string} type - The type of the element to create
@@ -85,7 +115,7 @@ function handleCellClick(rowIndex, colIndex) {
     if (highestEmptyRow !== -1) {
         state.board[highestEmptyRow][colIndex] = state.players[state.currentPlayerIndex];
         state.currentPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
-        showBoard();
+        updateCell(highestEmptyRow, colIndex)
     }
 }
 
