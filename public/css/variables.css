@@ -1,0 +1,16 @@
+:root {
+    /* Colors */
+    --color-grid-line: #000000;
+    --color-player-one: #0000FF;
+    --color-player-two: #FF0000;
+
+    /* Number of rows */
+    --number-rows: 7;
+
+    /* Sizes */
+    --board-size: 50vw;
+    --field-size: calc(var(--board-size) / var(--number-rows));
+    --piece-size: calc(var(--field-size) - 1.5vw);
+    --size-piece-margin: calc(var(--field-size) - var(--piece-size) / 2);
+
+}
