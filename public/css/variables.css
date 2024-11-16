@@ -12,5 +12,4 @@
     --field-size: calc(var(--board-size) / var(--number-rows));
     --piece-size: calc(var(--field-size) - 1.5vw);
     --size-piece-margin: calc((var(--field-size) - var(--piece-size)) / 2);
-
 }

@@ -26,7 +26,7 @@ function showBoard() {
 
         row.forEach((cell, colIndex) => {
             let cellDiv = elt("div", {class: "field"});
-            
+
             // onClick event listener
             cellDiv.addEventListener('click', () => handleCellClick(rowIndex, colIndex));
 
@@ -70,14 +70,40 @@ function elt(type, attrs, ...children) {
     return node;
 }
 
+
+/**
+ * handles the click event on a cell
+ * highest empty cell in the row gets filled if possible
+ * 
+ * @param rowIndex
+ * @param colIndex
+ */
 function handleCellClick(rowIndex, colIndex) {
+
+    const highestEmptyRow = getHighestEmptyRow(colIndex);
     
-    // for now: just adda piece at that position:
-    state.board[rowIndex][colIndex] = state.players[state.currentPlayerIndex];
-    showBoard();
-    state.currentPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
-    
+    if (highestEmptyRow !== -1) {
+        state.board[highestEmptyRow][colIndex] = state.players[state.currentPlayerIndex];
+        state.currentPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
+        showBoard();
+    }
 }
+
+/**
+ * This function is used to get the highest empty row in a column by looping through the board state.
+ * 
+ * @param colIndex
+ * @returns {number}
+ */
+function getHighestEmptyRow(colIndex) {
+    for (let rowIndex = state.board.length - 1; rowIndex >= 0; rowIndex--) {
+        if (state.board[rowIndex][colIndex] === '') {
+            return rowIndex;
+        }
+    }
+    return -1;
+}
+
 
 // Function to initialize the board on page load
 document.addEventListener('DOMContentLoaded', () => {
