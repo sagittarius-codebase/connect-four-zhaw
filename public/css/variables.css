@@ -1,8 +1,11 @@
 :root {
     /* Colors */
-    --color-grid-line: #000000;
-    --color-player-one: #0000FF;
-    --color-player-two: #FF0000;
+    --color-background: #101010;
+    --color-grid-line: #BBBBBB;
+    --color-player-one-dark: #1e70cc;
+    --color-player-one-light: #4fa6f7;
+    --color-player-two-dark: #cc5b0d;
+    --color-player-two-light: #ffa64d;
 
     /* Number of rows */
     --number-rows: 7;

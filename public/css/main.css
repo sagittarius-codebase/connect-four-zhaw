@@ -4,11 +4,15 @@ div {
     box-sizing: border-box;
 }
 
+body {
+    background-color: var(--color-background);
+}
+
 .board {
     display: flex;
     flex-direction: column;
     margin: 5vw auto;
-    outline: 1px solid var(--color-grid-line);
+    outline: 5px solid var(--color-grid-line);
     width: var(--board-size);
 }
 
@@ -17,7 +21,7 @@ div {
 }
 
 .board .field {
-    border: 1px solid var(--color-grid-line);
+    border: 2px solid var(--color-grid-line);
     height: var(--field-size);
     width: var(--field-size);
 }
@@ -31,12 +35,50 @@ div {
     height: var(--piece-size);
     margin: var(--size-piece-margin);
     width: var(--piece-size);
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
 }
 
 .board .field .player1 {
-    background-color: var(--color-player-one);
+    background: radial-gradient(circle at 30% 30%, var(--color-player-one-light), var(--color-player-one-dark));
+    box-shadow: 0 0 20px rgba(79, 166, 247, 0.6);
+    border-radius: 50%;
 }
 
 .board .field .player2 {
-    background-color: var(--color-player-two);
+    background: radial-gradient(circle at 30% 30%, var(--color-player-two-light), var(--color-player-two-dark));
+    box-shadow: 0 0 20px rgba(255, 166, 77, 0.6);
+    border-radius: 50%;
 }
+
+/* Hover Effect */
+.board .field .piece:hover {
+    transform-origin: center;
+    transform: scale(1.05);
+    filter: brightness(1.05);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
+}
+
+.piece-fall {
+    animation: fall 0.5s ease-in;
+    transform-origin: bottom; /* Make the squash stretch from the bottom edge */
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100vh) scaleY(1);
+    }
+    80% {
+        transform: translateY(0vh) scaleY(1.6); /* Stretch slightly while falling */
+    }
+    90% {
+        transform: translateY(0vh) scaleY(0.8) scaleX(1.2); /* Squash downwards on impact */
+    }
+    99% {
+        transform: translateY(1vh) scaleY(1.2) scaleX(0.95); /* Small overshoot stretch */
+    }
+    100% {
+        transform: translateY(0vh) scaleY(1) scaleX(1); /* Return to normal */
+    }
+}
+
+
