@@ -33,10 +33,10 @@ div {
     width: var(--piece-size);
 }
 
-.board .field .blue {
+.board .field .player1 {
     background-color: var(--color-player-one);
 }
 
-.board .field .red {
+.board .field .player2 {
     background-color: var(--color-player-two);
 }

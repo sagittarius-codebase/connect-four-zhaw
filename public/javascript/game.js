@@ -1,6 +1,11 @@
+const player1 = {id: 1, name: 'Player 1'};
+const player2 = {id: 2, name: 'Player 2'};
+
 // The game state
 let state = {
-    board: Array(6).fill(null).map(() => Array(7).fill(''))
+    board: Array(6).fill(null).map(() => Array(7).fill('')), // 6x7 board
+    players: [player1, player2],
+    currentPlayerIndex: 1
 };
 
 
@@ -16,17 +21,17 @@ function showBoard() {
     boardElement.innerHTML = ""; // Clear existing board
 
     // Loop through the board state to create cells
-    state.board.forEach((row) => {
+    state.board.forEach((row, rowIndex) => {
         let rowDiv = elt("div", {class: "row"});
 
-        row.forEach((cell) => {
+        row.forEach((cell, colIndex) => {
             let cellDiv = elt("div", {class: "field"});
+            
+            // onClick event listener
+            cellDiv.addEventListener('click', () => handleCellClick(rowIndex, colIndex));
 
-            if (cell === 'r') {
-                let pieceDiv = elt("div", {class: "red piece"});
-                cellDiv.appendChild(pieceDiv);
-            } else if (cell === 'b') {
-                let pieceDiv = elt("div", {class: "blue piece"});
+            if (cell) {
+                let pieceDiv = elt("div", {class: `piece player${cell.id}`});
                 cellDiv.appendChild(pieceDiv);
             }
 
@@ -63,6 +68,15 @@ function elt(type, attrs, ...children) {
     }
 
     return node;
+}
+
+function handleCellClick(rowIndex, colIndex) {
+    
+    // for now: just adda piece at that position:
+    state.board[rowIndex][colIndex] = state.players[state.currentPlayerIndex];
+    showBoard();
+    state.currentPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
+    
 }
 
 // Function to initialize the board on page load
