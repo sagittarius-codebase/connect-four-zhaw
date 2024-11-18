@@ -16,8 +16,8 @@ body {
 #scoreboard {
     display: flex;
     align-items: center;
-    margin-top: 1vh;
-    font-size: 4vh;
+    margin-top: 1vw;
+    font-size: 2em;
     font-weight: bold;
 }
 
@@ -61,7 +61,7 @@ body {
 .board {
     display: flex;
     flex-direction: column;
-    margin: 2vh auto 0;
+    margin: 1vw auto 0;
     outline: 5px solid var(--color-grid-line);
     width: var(--board-size);
 }
@@ -137,7 +137,7 @@ body {
     border-radius: 5px;
     color: var(--color-button-text);
     cursor: pointer;
-    font-size: 3vh;
+    font-size: 1.5em;
     font-weight: bold;
     margin: 0.75em 0;
     padding: 0.5em;
