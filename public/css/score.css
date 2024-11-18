@@ -1,0 +1,36 @@
+.player {
+    border: 3px solid transparent;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#player1 {
+    color: var(--color-player-one-light);
+}
+
+#player2 {
+    color: var(--color-player-two-light);
+}
+
+.active-player .player-name {
+    color: #000000;
+}
+
+#player1.active-player .player-name {
+    background-color: var(--color-player-one-light);
+}
+
+#player2.active-player .player-name {
+    background-color: var(--color-player-two-light);
+}
+
+.score-separator {
+    margin: 0 10px;
+    color: var(--color-grid-line);
+}
+
+.player-name {
+    padding: 0.2em 0.5em;
+    margin: 0 5vw;
+    transition: background-color 0.6s ease;
+}
