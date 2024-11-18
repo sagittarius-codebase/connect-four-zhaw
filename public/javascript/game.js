@@ -1,94 +1,15 @@
-const player1 = {id: 1, name: 'Player 1'};
-const player2 = {id: 2, name: 'Player 2'};
-
-// The game state
-let state = {
-    board: Array(6).fill(null).map(() => Array(7).fill('')), // 6x7 board
-    players: [player1, player2],
-    currentPlayerIndex: 1
-};
+import { showBoard, updateCell, state } from './board.js';
+import { applyFallAnimation } from './animations.js';
 
 
-/**
- * This function is used to show the current state of the board.
- * It calls the elt function to create new elements and append them to the board element.
- * It loops through the board state and creates div elements for each cell in the board.
- *
- * If the cell contains a piece, it creates a div element for the piece and appends it to the cell div.
- */
-function showBoard() {
-    const boardElement = document.getElementById("board");
-    boardElement.innerHTML = ""; // Clear existing board
+// Function to initialize the board on page load
+document.addEventListener('DOMContentLoaded', () => {
+    showBoard(handleCellClick);
+    updateActivePlayer();
 
-    // Loop through the board state to create cells
-    state.board.forEach((row, rowIndex) => {
-        let rowDiv = elt("div", {class: "row"});
-
-        row.forEach((cell, colIndex) => {
-            let cellDiv = elt("div", {class: "field"});
-
-            // onClick event listener
-            cellDiv.addEventListener('click', () => handleCellClick(rowIndex, colIndex));
-
-            if (cell) {
-                let pieceDiv = elt("div", {class: `piece player${cell.id}`});
-                cellDiv.appendChild(pieceDiv);
-            }
-
-            rowDiv.appendChild(cellDiv);
-        });
-
-        boardElement.appendChild(rowDiv);
-    });
-}
-
-/**
- * only updates given cell instead of updating the whole board -> performance improvement
- * 
- * @param rowIndex
- * @param colIndex
- */
-function updateCell(rowIndex, colIndex) {
-    const boardElement = document.getElementById("board");
-    const rowElement = boardElement.children[rowIndex];
-    const cellElement = rowElement.children[colIndex];
-
-    const cell = state.board[rowIndex][colIndex];
-    if (cell) {
-        const pieceDiv = elt("div", {class: `piece player${cell.id} piece-fall` });
-        cellElement.appendChild(pieceDiv);
-    }
-}
-
-
-/**
- * This function is used to create a new element with the given type, attributes and children.
- *
- * @param {string} type - The type of the element to create
- * @param {object} attrs - An object containing the attributes to set on the created element
- * @param {...HTMLElement|string} children - The children to append to the created element
- * @returns {HTMLElement}
- */
-function elt(type, attrs, ...children) {
-    let node = document.createElement(type);
-
-    // Loop through the attributes object and set attributes on the created element
-    Object.keys(attrs).forEach(key => {
-        node.setAttribute(key, attrs[key]);
-    });
-
-    // Loop through the children array and append them to the created element
-    for (let child of children) {
-        if (typeof child != "string") {
-            node.appendChild(child);
-        } else {
-            node.appendChild(document.createTextNode(child));
-        }
-    }
-
-    return node;
-}
-
+    const newGameButton = document.getElementById("newGame");
+    newGameButton.addEventListener('click', () => handleNewGameClick());
+});
 
 /**
  * handles the click event on a cell
@@ -125,26 +46,7 @@ function getHighestEmptyRow(colIndex) {
     return -1;
 }
 
-/**
- * This function is used to apply the fall animation to a piece in the board.
- * It sets the animation delay based on the row index and the adjusted delay.
- * Delay is calculated based on the row index and the adjusted delay. -> pieces at the bottom fall first
- * 
- * @param pieces
- * @param colIndex
- * @param rowIndex
- * @param adjustedDelay
- */
-function applyFallAnimation(pieces, colIndex, rowIndex, adjustedDelay) {
-    const piece = pieces[rowIndex]?.[colIndex];
-    if (piece) {
-        const rowDelay = (5 - rowIndex) * 50;
-        const totalDelay = adjustedDelay + rowDelay;
 
-        piece.style.animationDelay = `${totalDelay}ms`;
-        piece.classList.add('piece-fall-out');
-    }
-}
 
 /**
  * This function is used to empty the board by applying the fall animation to each piece in the board.
@@ -191,7 +93,7 @@ function handleNewGameClick() {
     setTimeout(() => {
         state.board = Array(6).fill(null).map(() => Array(7).fill(''));
         state.currentPlayerIndex = 1;
-        showBoard();
+        showBoard(handleCellClick);
         updateActivePlayer();
 
         boardElement.classList.remove('disable-clicks');
@@ -228,11 +130,4 @@ function updateActivePlayer() {
 }
 
 
-// Function to initialize the board on page load
-document.addEventListener('DOMContentLoaded', () => {
-    showBoard();
-    updateActivePlayer();
-    
-    const newGameButton = document.getElementById("newGame");
-    newGameButton.addEventListener('click', () => handleNewGameClick());
-});
+
