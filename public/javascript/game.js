@@ -106,28 +106,13 @@ function handleNewGameClick() {
  * It basically swaps the active class between the player elements.
  */
 function updateActivePlayer() {
-    const player1Name = document.querySelector('#player1 .player-name');
-    const player2Name = document.querySelector('#player2 .player-name');
-
-    // Reset styles for both players
-    player1Name.classList.remove('active');
-    player2Name.classList.remove('active');
-    player1Name.style.backgroundColor = '';
-    player2Name.style.backgroundColor = '';
-    player1Name.style.color = '';
-    player2Name.style.color = '';
-
-    // Set the active player
-    if (state.currentPlayerIndex === 0) {
-        player1Name.classList.add('active');
-        player1Name.style.backgroundColor = 'var(--color-player-one-light)';
-        player1Name.style.color = 'black';
-    } else {
-        player2Name.classList.add('active');
-        player2Name.style.backgroundColor = 'var(--color-player-two-light)';
-        player2Name.style.color = 'black';
-    }
+    const players = [document.querySelector('#player1'), document.querySelector('#player2')];
+    
+    players.forEach((player, index) => {
+        player.classList.toggle('active-player', index === state.currentPlayerIndex);
+    });
 }
+
 
 
 
