@@ -1,0 +1,32 @@
+.board .field {
+    border: 2px solid var(--color-grid-line);
+    height: var(--field-size);
+    width: var(--field-size);
+}
+
+.board .field .piece {
+    border-radius: 50%;
+    height: var(--piece-size);
+    margin: var(--size-piece-margin);
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    width: var(--piece-size);
+}
+
+.board .field .player1 {
+    background: radial-gradient(circle at 30% 30%, var(--color-player-one-light), var(--color-player-one-dark));
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(79, 166, 247, 0.6);
+}
+
+.board .field .player2 {
+    background: radial-gradient(circle at 30% 30%, var(--color-player-two-light), var(--color-player-two-dark));
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 166, 77, 0.6);
+}
+
+.board .field .piece:hover {
+    transform-origin: center;
+    transform: scale(1.05);
+    filter: brightness(1.05);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
+}
