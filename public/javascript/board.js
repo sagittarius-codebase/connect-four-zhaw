@@ -15,22 +15,18 @@ export const state = {
  * It loops through the board state and creates div elements for each cell in the board.
  *
  * If the cell contains a piece, it creates a div element for the piece and appends it to the cell div.
- * 
- * @param handleCellClick - function to handle cell click event
+ *
  */
-export function showBoard(handleCellClick) {
+export function showBoard() {
     const boardElement = document.getElementById("board");
     boardElement.innerHTML = ""; // Clear existing board
 
     // Loop through the board state to create cells
-    state.board.forEach((row, rowIndex) => {
+    state.board.forEach((row) => {
         let rowDiv = elt("div", {class: "row"});
 
-        row.forEach((cell, colIndex) => {
+        row.forEach((cell) => {
             let cellDiv = elt("div", {class: "field"});
-
-            // onClick event listener
-            cellDiv.addEventListener('click', () => handleCellClick(rowIndex, colIndex));
 
             if (cell) {
                 let pieceDiv = elt("div", {class: `piece player${cell.id}`});
@@ -61,3 +57,4 @@ export function updateCell(rowIndex, colIndex) {
         cellElement.appendChild(pieceDiv);
     }
 }
+

@@ -4,12 +4,27 @@ import { applyFallAnimation } from './animations.js';
 
 // Function to initialize the board on page load
 document.addEventListener('DOMContentLoaded', () => {
-    showBoard(handleCellClick);
+    showBoard();
+    setupBoardEventListeners();
     updateActivePlayer();
 
     const newGameButton = document.getElementById("newGame");
     newGameButton.addEventListener('click', () => handleNewGameClick());
 });
+
+function setupBoardEventListeners() {
+    const boardElement = document.getElementById("board");
+
+    boardElement.addEventListener('click', (event) => {
+        const cellDiv = event.target.closest('.field');
+        if (!cellDiv) return;
+
+        const colIndex = Array.from(cellDiv.parentElement.children).indexOf(cellDiv);
+        const rowIndex = Array.from(boardElement.children).indexOf(cellDiv.parentElement);
+
+        handleCellClick(rowIndex, colIndex);
+    });
+}
 
 /**
  * handles the click event on a cell
@@ -93,7 +108,7 @@ function handleNewGameClick() {
     setTimeout(() => {
         state.board = Array(6).fill(null).map(() => Array(7).fill(''));
         state.currentPlayerIndex = 1;
-        showBoard(handleCellClick);
+        showBoard();
         updateActivePlayer();
 
         boardElement.classList.remove('disable-clicks');
