@@ -6,7 +6,7 @@ import { applyFallAnimation } from './animations.js';
 document.addEventListener('DOMContentLoaded', () => {
     showBoard();
     setupBoardEventListeners();
-    updateActivePlayer();
+    resetActivePlayer();
 
     const newGameButton = document.getElementById("newGame");
     newGameButton.addEventListener('click', () => handleNewGameClick());
@@ -109,7 +109,7 @@ function handleNewGameClick() {
         state.board = Array(6).fill(null).map(() => Array(7).fill(''));
         state.currentPlayerIndex = 1;
         showBoard();
-        updateActivePlayer();
+        resetActivePlayer();
 
         boardElement.classList.remove('disable-clicks');
         document.body.style.overflow = '';
@@ -126,6 +126,14 @@ function updateActivePlayer() {
     players.forEach((player, index) => {
         player.classList.toggle('active-player', index === state.currentPlayerIndex);
     });
+}
+
+/**
+ * This function is used to reset the active player to the first player.
+ */
+function resetActivePlayer() {
+    state.currentPlayerIndex = 0;
+    updateActivePlayer();
 }
 
 
