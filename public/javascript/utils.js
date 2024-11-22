@@ -6,7 +6,7 @@
  * @param {...HTMLElement|string} children - The children to append to the created element
  * @returns {HTMLElement}
  */
-export function elt(type, attrs, ...children) {
+function elt(type, attrs, ...children) {
     let node = document.createElement(type);
 
     // Loop through the attributes object and set attributes on the created element
@@ -25,3 +25,5 @@ export function elt(type, attrs, ...children) {
 
     return node;
 }
+
+export { elt };

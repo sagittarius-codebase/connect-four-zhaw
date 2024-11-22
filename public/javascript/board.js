@@ -1,8 +1,7 @@
 import { elt } from './utils.js';
-import { applyFallAnimation } from './animations.js';
 
 // The game state
-export const state = {
+const state = {
     board: Array(6).fill(null).map(() => Array(7).fill('')),
     players: [{ id: 1, name: 'Player 1' }, { id: 2, name: 'Player 2' }],
     currentPlayerIndex: 1
@@ -17,7 +16,7 @@ export const state = {
  * If the cell contains a piece, it creates a div element for the piece and appends it to the cell div.
  *
  */
-export function showBoard() {
+function showBoard() {
     const boardElement = document.getElementById("board");
     boardElement.innerHTML = ""; // Clear existing board
 
@@ -46,7 +45,7 @@ export function showBoard() {
  * @param rowIndex
  * @param colIndex
  */
-export function updateCell(rowIndex, colIndex) {
+function updateCell(rowIndex, colIndex) {
     const boardElement = document.getElementById("board");
     const rowElement = boardElement.children[rowIndex];
     const cellElement = rowElement.children[colIndex];
@@ -57,4 +56,6 @@ export function updateCell(rowIndex, colIndex) {
         cellElement.appendChild(pieceDiv);
     }
 }
+
+export { state, showBoard, updateCell };
 

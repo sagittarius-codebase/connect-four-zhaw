@@ -8,7 +8,7 @@
  * @param rowIndex
  * @param adjustedDelay
  */
-export function applyFallAnimation(pieces, colIndex, rowIndex, adjustedDelay) {
+function applyFallAnimation(pieces, colIndex, rowIndex, adjustedDelay) {
     const piece = pieces[rowIndex]?.[colIndex];
     if (piece) {
         const rowDelay = (5 - rowIndex) * 50;
@@ -18,3 +18,5 @@ export function applyFallAnimation(pieces, colIndex, rowIndex, adjustedDelay) {
         piece.classList.add('piece-fall-out');
     }
 }
+
+export { applyFallAnimation };
