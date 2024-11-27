@@ -50,6 +50,8 @@ function updateCell(state, rowIndex, colIndex) {
         const pieceDiv = elt("div", {class: `piece player${cell.id} piece-fall` });
         cellElement.appendChild(pieceDiv);
     }
+
+    return cellElement;
 }
 
 export { showBoard, updateCell };

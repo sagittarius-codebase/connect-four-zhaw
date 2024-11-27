@@ -1,6 +1,7 @@
 import {showBoard, updateCell} from './board.js';
 import {applyFallAnimation} from './animations.js';
 import {loadStateFromServer, saveStateToServer} from "./server.js";
+import {checkIfWinner} from "./utils.js";
 
 const emptyBoardState = Array(6).fill(null).map(() => Array(7).fill(''));
 
@@ -58,7 +59,11 @@ function handleCellClick(rowIndex, colIndex) {
 
     if (highestEmptyRow !== -1) {
         state.board[highestEmptyRow][colIndex] = state.players[state.currentPlayerIndex];
-        updateCell(state, highestEmptyRow, colIndex);
+        const cell = updateCell(state, highestEmptyRow, colIndex);
+        
+        cell.addEventListener("animationend", () => {
+            checkForWinner();
+        }, { once: true });
 
         state.currentPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
         updateActivePlayer();
@@ -124,7 +129,7 @@ function handleNewGameClick() {
     // Wait for the longest animation to finish before resetting the board
     const animationDuration = 1000 + adjustedDelay;
     setTimeout(() => {
-        state.board = Array(6).fill(null).map(() => Array(7).fill(''));
+        state.board = emptyBoardState;
         state.currentPlayerIndex = 1;
         showBoard(state);
         resetActivePlayer();
@@ -155,6 +160,19 @@ function resetActivePlayer() {
 }
 
 /**
+ * This function is used to check for a winner after each move.
+ */
+function checkForWinner() {
+
+    for (let i = 0; i < 2; i++) {
+        if (checkIfWinner(state.players[i], state)) {
+            alert(`Player ${state.players[i].id} wins!`);
+            return;
+        }
+    }
+}
+
+/**
  * This function is used to load the state from the server.
  * It then updates the board based on the loaded state.
  * If the board is non-empty, it asks for confirmation before loading a new state.
@@ -171,16 +189,28 @@ function loadState() {
             state = structuredClone(data);
             state.board = emptyBoardState;
             showBoard(state);
+
+            let activeAnimations = 0;
+
             data.board.forEach((row, rowIndex) => {
                 row.forEach((cell, colIndex) => {
                     if (cell !== '') {
+                        activeAnimations++;
                         setTimeout(() => {
                             state.board[rowIndex][colIndex] = state.players[cell.id - 1];
-                            updateCell(state, rowIndex, colIndex);
+                            const updatedCell = updateCell(state, rowIndex, colIndex);
+
+                            // Listen for the animation end
+                            updatedCell.addEventListener("animationend", () => {
+                                activeAnimations--;
+                                if (activeAnimations === 0) {
+                                    checkForWinner();
+                                }
+                            }, { once: true });
                         }, (6 - rowIndex) * 100 + colIndex * 200); // Add delays for row and column
                     }
                 });
-            })
+            });
         })
         .catch(error => {
             console.error("Failed to load state from server:", error);
