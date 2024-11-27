@@ -117,5 +117,5 @@ app.use(function (req, res) {
 
 // start the server and listen on port 3000
 app.listen(3000)
-console.log('Express started on port 3000')
+console.log('Express started on: http://localhost:3000')
 

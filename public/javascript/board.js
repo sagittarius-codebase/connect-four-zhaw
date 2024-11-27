@@ -1,12 +1,5 @@
 import { elt } from './utils.js';
 
-// The game state
-const state = {
-    board: Array(6).fill(null).map(() => Array(7).fill('')),
-    players: [{ id: 1, name: 'Player 1' }, { id: 2, name: 'Player 2' }],
-    currentPlayerIndex: 1
-};
-
 
 /**
  * This function is used to show the current state of the board.
@@ -15,8 +8,9 @@ const state = {
  *
  * If the cell contains a piece, it creates a div element for the piece and appends it to the cell div.
  *
+ * @param state - the current game state
  */
-function showBoard() {
+function showBoard(state) {
     const boardElement = document.getElementById("board");
     boardElement.innerHTML = ""; // Clear existing board
 
@@ -42,10 +36,11 @@ function showBoard() {
 /**
  * only updates given cell instead of updating the whole board -> performance improvement
  *
- * @param rowIndex
- * @param colIndex
+ * @param state - the current game state
+ * @param rowIndex - the row index of the cell to be updated
+ * @param colIndex - the column index of the cell to be updated
  */
-function updateCell(rowIndex, colIndex) {
+function updateCell(state, rowIndex, colIndex) {
     const boardElement = document.getElementById("board");
     const rowElement = boardElement.children[rowIndex];
     const cellElement = rowElement.children[colIndex];
@@ -57,5 +52,5 @@ function updateCell(rowIndex, colIndex) {
     }
 }
 
-export { state, showBoard, updateCell };
+export { showBoard, updateCell };
 

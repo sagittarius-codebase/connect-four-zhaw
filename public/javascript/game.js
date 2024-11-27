@@ -1,17 +1,34 @@
-import { showBoard, updateCell, state } from './board.js';
-import { applyFallAnimation } from './animations.js';
+import {showBoard, updateCell} from './board.js';
+import {applyFallAnimation} from './animations.js';
+import {loadStateFromServer, saveStateToServer} from "./server.js";
 
+// The game state
+let state = {
+    board: Array(6).fill(null).map(() => Array(7).fill('')),
+    players: [{id: 1, name: 'Player 1'}, {id: 2, name: 'Player 2'}],
+    currentPlayerIndex: 1
+};
 
 // Function to initialize the board on page load
 document.addEventListener('DOMContentLoaded', () => {
-    showBoard();
+    showBoard(state);
     setupBoardEventListeners();
     resetActivePlayer();
 
     const newGameButton = document.getElementById("newGame");
     newGameButton.addEventListener('click', () => handleNewGameClick());
+
+    const loadStateButton = document.getElementById("loadState");
+    loadStateButton.addEventListener('click', () => loadState());
+
+    const saveStateButton = document.getElementById("saveState");
+    saveStateButton.addEventListener('click', () => saveState());
 });
 
+/**
+ * This function is used to set up the event listeners for the board.
+ * It adds a click event listener to the board element and handles the cell click event.
+ */
 function setupBoardEventListeners() {
     const boardElement = document.getElementById("board");
 
@@ -29,17 +46,17 @@ function setupBoardEventListeners() {
 /**
  * handles the click event on a cell
  * highest empty cell in the row gets filled if possible
- * 
+ *
  * @param rowIndex
  * @param colIndex
  */
 function handleCellClick(rowIndex, colIndex) {
 
     const highestEmptyRow = getHighestEmptyRow(colIndex);
-    
+
     if (highestEmptyRow !== -1) {
         state.board[highestEmptyRow][colIndex] = state.players[state.currentPlayerIndex];
-        updateCell(highestEmptyRow, colIndex)
+        updateCell(state, highestEmptyRow, colIndex);
 
         state.currentPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
         updateActivePlayer();
@@ -48,7 +65,7 @@ function handleCellClick(rowIndex, colIndex) {
 
 /**
  * This function is used to get the highest empty row in a column by looping through the board state.
- * 
+ *
  * @param colIndex
  * @returns {number}
  */
@@ -62,11 +79,10 @@ function getHighestEmptyRow(colIndex) {
 }
 
 
-
 /**
  * This function is used to empty the board by applying the fall animation to each piece in the board.
  * It loops through the board state and applies the fall animation to each piece in the board.
- * 
+ *
  * @param boardElement
  * @returns {number}
  */
@@ -100,15 +116,15 @@ function handleNewGameClick() {
     // Disable all clicks and prevent scrolling during the animation
     boardElement.classList.add('disable-clicks');
     document.body.style.overflow = 'hidden';
-    
+
     let adjustedDelay = emptyBoard(boardElement);
 
     // Wait for the longest animation to finish before resetting the board
-    const animationDuration = 1000 + adjustedDelay ;
+    const animationDuration = 1000 + adjustedDelay;
     setTimeout(() => {
         state.board = Array(6).fill(null).map(() => Array(7).fill(''));
         state.currentPlayerIndex = 1;
-        showBoard();
+        showBoard(state);
         resetActivePlayer();
 
         boardElement.classList.remove('disable-clicks');
@@ -122,7 +138,7 @@ function handleNewGameClick() {
  */
 function updateActivePlayer() {
     const players = [document.querySelector('#player1'), document.querySelector('#player2')];
-    
+
     players.forEach((player, index) => {
         player.classList.toggle('active-player', index === state.currentPlayerIndex);
     });
@@ -134,6 +150,51 @@ function updateActivePlayer() {
 function resetActivePlayer() {
     state.currentPlayerIndex = 0;
     updateActivePlayer();
+}
+
+/**
+ * This function is used to load the state from the server.
+ * It then updates the board based on the loaded state.
+ * If the board is non-empty, it asks for confirmation before loading a new state.
+ */
+function loadState() {
+    loadStateFromServer()
+        .then(data => {
+
+            //Check if board is non empty
+            if (data.board.flat().some(cell => cell !== '')) {
+                // confirm before loading a new state
+                if (!confirm("There is already a game in progress. Do you want to load a new game?\nCurrent progress will be lost."))
+                    return;
+            }
+
+            state = structuredClone(data);
+            state.board = Array(6).fill(null).map(() => Array(7).fill(''));
+            showBoard(state);
+            data.board.forEach((row, rowIndex) => {
+                row.forEach((cell, colIndex) => {
+                    if (cell !== '') {
+                        setTimeout(() => {
+                            state.board[rowIndex][colIndex] = state.players[cell.id - 1];
+                            updateCell(state, rowIndex, colIndex);
+                        }, (6 - rowIndex) * 100 + colIndex * 200); // Add delays for row and column
+                    }
+                });
+            })
+        })
+        .catch(error => {
+            console.error("Failed to load state from server:", error);
+        });
+}
+
+/**
+ * This function is used to save the state to the server.
+ */
+function saveState() {
+    saveStateToServer(state)
+        .catch(error => {
+            console.error("Failed to save state to server:", error);
+        });
 }
 
 
