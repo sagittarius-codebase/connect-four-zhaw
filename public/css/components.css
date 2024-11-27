@@ -6,11 +6,8 @@
     margin-top: 1vw;
 }
 
-#newGame {
-    background-color: var(--color-button);
-    border: 5px solid var(--color-button-border);
+.game-controls button {
     border-radius: 5px;
-    color: var(--color-button-text);
     cursor: pointer;
     font-size: 1.5em;
     font-weight: bold;
@@ -21,8 +18,43 @@
     width: 15vw;
 }
 
+.state-management button {
+    width: 166px;
+}
+
+#newGame {
+    background-color: var(--color-button);
+    border: 5px solid var(--color-newGame-button);
+    color: var(--color-button-text);
+}
+
 #newGame:hover {
-    background-color: var(--color-button-border);
-    box-shadow: 0 0 30px var(--color-button-hover-shadow);
+    background-color: var(--color-newGame-button);
+    box-shadow: 0 0 30px var(--color-newGame-button-shadow);
+    color: var(--color-button-hover-text);
+}
+
+#loadState {
+    background-color: var(--color-button);
+    border: 5px solid var(--color-loadState-button);
+    color: var(--color-button-text);
+    margin-right: 1vw;
+}
+
+#loadState:hover {
+    background-color: var(--color-loadState-button);
+    box-shadow: 0 0 30px var(--color-loadState-button-shadow);
+    color: var(--color-button-hover-text);
+}
+
+#saveState {
+    background-color: var(--color-button);
+    border: 5px solid var(--color-saveState-button);
+    color: var(--color-button-text);
+}
+
+#saveState:hover {
+    background-color: var(--color-saveState-button);
+    box-shadow: 0 0 30px var(--color-saveState-button-shadow);
     color: var(--color-button-hover-text);
 }

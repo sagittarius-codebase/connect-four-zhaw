@@ -22,3 +22,8 @@ div {
     display: flex;
 }
 
+.game-controls {
+    display: flex;
+    gap: 4vw;
+}
+

@@ -8,11 +8,15 @@
     --color-player-two-light: #ffa64d;
 
     --color-button: transparent;
-    --color-button-border: #1e70cc;
     --color-button-text: #BBBBBB;
-    --color-button-hover: #1e70cc;
-    --color-button-hover-shadow: #4fa6f755;
     --color-button-hover-text: #101010;
+    /* specific buttons */
+    --color-newGame-button: #FF453A;
+    --color-newGame-button-shadow: #FF453AAA;
+    --color-loadState-button: #BF5AF2;
+    --color-loadState-button-shadow: #BF5AF2AA;
+    --color-saveState-button: #30D158;
+    --color-saveState-button-shadow: #30D158AA;
 
 
     /* Number of rows */
