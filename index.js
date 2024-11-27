@@ -1,4 +1,3 @@
-
 let express = require('express')
 let app = express()
 
@@ -29,17 +28,17 @@ function error(status, msg) {
  * @returns {string}
  */
 function guidGenerator() {
-    let S4 = function() {
-        return (((1+Math.random())*0x10000)|0).toString(16).substring(1)
+    let S4 = function () {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
     }
-    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4())
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4())
 }
 
 // static files in public directory
 app.use(express.static('public'))
 
 // Middleware for API-Key-Check
-app.use('/api', function(req, res, next){
+app.use('/api', function (req, res, next) {
     let key = req.query['api-key']
 
     // key is missing
@@ -62,10 +61,17 @@ app.use(express.json())
 const apiKeys = ['wbeweb', 'c4game']
 
 // our data table with some initial data
-const data = {1234567890: {demodata: "wbe is an inspiring challenge"}}
+const data = {
+    1234567890: {demodata: "wbe is an inspiring challenge"},
+    connect4State: {
+        board: Array(6).fill(null).map(() => Array(7).fill('')),
+        players: [{ id: 1, name: 'Player 1' }, { id: 2, name: 'Player 2' }],
+        currentPlayerIndex: 1
+    }
+}
 
 // handle GET-Request for /api/data
-app.get('/api/data/:id', function(req, res, next){
+app.get('/api/data/:id', function (req, res, next) {
     let id = req.params.id
     let result = data[id]
 
@@ -81,33 +87,32 @@ app.post('/api/data', function (req, res, next) {
 })
 
 //  handle DELETE-Request for /api/data
-app.delete('/api/data/:id', function(req, res, next){
+app.delete('/api/data/:id', function (req, res, next) {
     let id = req.params.id
     delete data[id]
     res.sendStatus(204)
 })
 
 //  handle PUT-Request for /api/data
-app.put('/api/data/:id', function(req, res, next){
+app.put('/api/data/:id', function (req, res, next) {
     let id = req.params.id
     if (data[id]) {
         data[id] = req.body
         res.send(req.body)
-    }
-    else next()
+    } else next()
 })
 
 
 // Middleware for error handling with 4 parameters
-app.use(function(err, req, res, next){
+app.use(function (err, req, res, next) {
     res.status(err.status || 500)
-    res.send({ error: err.message })
+    res.send({error: err.message})
 })
 
 //  Catch-all: if no route is matched, this function is called (404)
-app.use(function(req, res){
+app.use(function (req, res) {
     res.status(404)
-    res.send({ error: "not found" })
+    res.send({error: "not found"})
 })
 
 // start the server and listen on port 3000
