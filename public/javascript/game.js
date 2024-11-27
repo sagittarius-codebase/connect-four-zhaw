@@ -2,9 +2,11 @@ import {showBoard, updateCell} from './board.js';
 import {applyFallAnimation} from './animations.js';
 import {loadStateFromServer, saveStateToServer} from "./server.js";
 
+const emptyBoardState = Array(6).fill(null).map(() => Array(7).fill(''));
+
 // The game state
 let state = {
-    board: Array(6).fill(null).map(() => Array(7).fill('')),
+    board: emptyBoardState,
     players: [{id: 1, name: 'Player 1'}, {id: 2, name: 'Player 2'}],
     currentPlayerIndex: 1
 };
@@ -161,15 +163,13 @@ function loadState() {
     loadStateFromServer()
         .then(data => {
 
-            //Check if board is non empty
             if (data.board.flat().some(cell => cell !== '')) {
-                // confirm before loading a new state
                 if (!confirm("There is already a game in progress. Do you want to load a new game?\nCurrent progress will be lost."))
                     return;
             }
 
             state = structuredClone(data);
-            state.board = Array(6).fill(null).map(() => Array(7).fill(''));
+            state.board = emptyBoardState;
             showBoard(state);
             data.board.forEach((row, rowIndex) => {
                 row.forEach((cell, colIndex) => {
