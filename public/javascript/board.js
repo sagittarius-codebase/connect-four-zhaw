@@ -1,12 +1,10 @@
-import { elt } from './utils.js';
+import { elt, renderSJDON } from "./utils.js";
 
 
 /**
  * This function is used to show the current state of the board.
- * It calls the elt function to create new elements and append them to the board element.
- * It loops through the board state and creates div elements for each cell in the board.
- *
- * If the cell contains a piece, it creates a div element for the piece and appends it to the cell div.
+ * It creates a SJDON representation of the board and renders it to the board element,
+ * by calling the renderSJDON function.
  *
  * @param state - the current game state
  */
@@ -14,22 +12,15 @@ function showBoard(state) {
     const boardElement = document.getElementById("board");
     boardElement.innerHTML = ""; // Clear existing board
 
-    // Loop through the board state to create cells
-    state.board.forEach((row) => {
-        let rowDiv = elt("div", {class: "row"});
+    const boardSJDON = state.board.map(row => ["div", { class: "row" },
+        ...row.map(cell => ["div", { class: "field" },
+            ...(cell ? ["div", { class: `piece player${cell.id}` }] : [])
+        ])
+    ]);
 
-        row.forEach((cell) => {
-            let cellDiv = elt("div", {class: "field"});
-
-            if (cell) {
-                let pieceDiv = elt("div", {class: `piece player${cell.id}`});
-                cellDiv.appendChild(pieceDiv);
-            }
-
-            rowDiv.appendChild(cellDiv);
-        });
-
-        boardElement.appendChild(rowDiv);
+    // Render only rows inside the existing board element
+    boardSJDON.forEach(rowSJDON => {
+        renderSJDON(rowSJDON, boardElement);
     });
 }
 
