@@ -23,7 +23,7 @@
     --number-rows: 7;
 
     /* Sizes */
-    --board-size: 45vw;
+    --board-size: 40vw;
     --field-size: calc(var(--board-size) / var(--number-rows));
     --piece-size: calc(var(--field-size) - 2vh);
     --size-piece-margin: calc((var(--field-size) - var(--piece-size)) / 2);
