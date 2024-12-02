@@ -7,7 +7,7 @@ const emptyBoardState = Array(6).fill(null).map(() => Array(7).fill(''));
 
 // The game state
 let state = {
-    board: emptyBoardState,
+    board: structuredClone(emptyBoardState),
     players: [{id: 1, name: 'Player 1'}, {id: 2, name: 'Player 2'}],
     currentPlayerIndex: 1
 };
@@ -129,8 +129,10 @@ function handleNewGameClick() {
     // Wait for the longest animation to finish before resetting the board
     const animationDuration = 1000 + adjustedDelay;
     setTimeout(() => {
-        state.board = emptyBoardState;
+        state.board = structuredClone(emptyBoardState);
         state.currentPlayerIndex = 1;
+        boardElement.innerHTML = '';
+
         showBoard(state);
         resetActivePlayer();
 
@@ -187,7 +189,7 @@ function loadState() {
             }
 
             state = structuredClone(data);
-            state.board = emptyBoardState;
+            state.board = structuredClone(emptyBoardState);
             showBoard(state);
 
             let activeAnimations = 0;
