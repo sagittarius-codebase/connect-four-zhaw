@@ -1,6 +1,5 @@
 import {showBoard, updateCell} from './board.js';
 import {applyFallAnimation} from './animations.js';
-import {loadStateFromServer, saveStateToServer} from "./server.js";
 import {checkIfWinner} from "./utils.js";
 
 const emptyBoardState = Array(6).fill(null).map(() => Array(7).fill(''));
