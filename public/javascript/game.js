@@ -175,58 +175,65 @@ function checkForWinner() {
 }
 
 /**
- * This function is used to load the state from the server.
+ * This function is used to load the state from the local storage.
  * It then updates the board based on the loaded state.
  * If the board is non-empty, it asks for confirmation before loading a new state.
  */
 function loadState() {
-    loadStateFromServer()
-        .then(data => {
 
-            if (data.board.flat().some(cell => cell !== '')) {
-                if (!confirm("There is already a game in progress. Do you want to load a new game?\nCurrent progress will be lost."))
-                    return;
-            }
+    if (state.board.flat().some(cell => cell !== '')) {
+        if (!confirm("There is already a game in progress. Do you want to load a new game?\nCurrent progress will be lost."))
+            return;
+    }
 
-            state = structuredClone(data);
-            state.board = structuredClone(emptyBoardState);
-            showBoard(state);
+    try {
 
-            let activeAnimations = 0;
+        const data = JSON.parse(localStorage.getItem('connect4State'));
 
-            data.board.forEach((row, rowIndex) => {
-                row.forEach((cell, colIndex) => {
-                    if (cell !== '') {
-                        activeAnimations++;
-                        setTimeout(() => {
-                            state.board[rowIndex][colIndex] = state.players[cell.id - 1];
-                            const updatedCell = updateCell(state, rowIndex, colIndex);
+        state = structuredClone(data);
+        state.board = structuredClone(emptyBoardState);
+        showBoard(state);
 
-                            // Listen for the animation end
-                            updatedCell.addEventListener("animationend", () => {
-                                activeAnimations--;
-                                if (activeAnimations === 0) {
-                                    checkForWinner();
-                                }
-                            }, { once: true });
-                        }, (6 - rowIndex) * 100 + colIndex * 200); // Add delays for row and column
-                    }
-                });
+        let activeAnimations = 0;
+
+        data.board.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                if (cell !== '') {
+                    activeAnimations++;
+                    setTimeout(() => {
+                        state.board[rowIndex][colIndex] = state.players[cell.id - 1];
+                        const updatedCell = updateCell(state, rowIndex, colIndex);
+                        updateActivePlayer();
+
+                        // Listen for the animation end
+                        updatedCell.addEventListener("animationend", () => {
+                            activeAnimations--;
+                            if (activeAnimations === 0) {
+                                checkForWinner();
+                            }
+                        }, {once: true});
+                    }, (6 - rowIndex) * 100 + colIndex * 200); // Add delays for row and column
+                }
             });
-        })
-        .catch(error => {
-            console.error("Failed to load state from server:", error);
         });
+    } catch (error) {
+        console.error('Failed to load state from LocalStorage:', error);
+        alert('Failed to load the game state.');
+    }
 }
 
 /**
- * This function is used to save the state to the server.
+ * Save the current state to the local storage
  */
 function saveState() {
-    saveStateToServer(state)
-        .catch(error => {
-            console.error("Failed to save state to server:", error);
-        });
+    try {
+        const serializedState = JSON.stringify(state);
+        localStorage.setItem('connect4State', serializedState);
+        alert('Game state saved successfully!');
+    } catch (error) {
+        console.error('Failed to save state to LocalStorage:', error);
+        alert('Failed to save the game state.');
+    }
 }
 
 
