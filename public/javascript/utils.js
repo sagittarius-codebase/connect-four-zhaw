@@ -26,42 +26,6 @@ function elt(type, attrs, ...children) {
     return node;
 }
 
-/**
- * This function is used to render a SJDON representation of an element to a parent element.
- * It creates an element based on the type, attributes and children in the SJDON representation
- * and appends it to the parent element.
- *
- * It then calls itself recursively for each child in the SJDON representation.
- *
- * SJDON is a simple JSON-like representation of an element, where the first element is the type of the element.
- *
- * @param sjdon
- * @param parent
- */
-function renderSJDON(sjdon, parent) {
-    const [type, attributesOrChild, ...children] = sjdon;
-    const element = document.createElement(type);
-
-    if (attributesOrChild && typeof attributesOrChild === 'object' && !Array.isArray(attributesOrChild)) {
-        Object.entries(attributesOrChild).forEach(([key, value]) => {
-            element.setAttribute(key, value);
-        });
-    } else {
-        children.unshift(attributesOrChild);
-    }
-
-    children.forEach(child => {
-        if (Array.isArray(child)) {
-            renderSJDON(child, element);
-        } else if (child) {
-            element.appendChild(document.createTextNode(child));
-        }
-    });
-
-    parent.appendChild(element);
-}
-
-
 
 /**
  * This function is used to check if a player has won the game.
@@ -112,4 +76,4 @@ function checkIfWinner(player, state) {
     return false;
 }
 
-export { elt, renderSJDON, checkIfWinner };
+export { elt, checkIfWinner };
