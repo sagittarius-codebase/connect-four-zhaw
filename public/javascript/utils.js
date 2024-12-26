@@ -26,6 +26,32 @@ function elt(type, attrs, ...children) {
     return node;
 }
 
+/**
+ * Creates a new array with the value at the specified index replaced.
+ * The original array remains unchanged.
+ *
+ * @param {Array} lst - The original array
+ * @param {number} idx - The index to update
+ * @param {*} val - The new value
+ * @returns {Array} A new array with the updated value
+ */
+function setInList(lst, idx, val) {
+    return lst.map((item, i) => (i === idx ? val : item));
+}
+
+/**
+ * Creates a new object with the specified attribute updated.
+ * The original object remains unchanged.
+ *
+ * @param {Object} obj - The original object
+ * @param {string} attr - The attribute to update
+ * @param {*} val - The new value
+ * @returns {Object} A new object with the updated attribute
+ */
+function setInObj(obj, attr, val) {
+    return { ...obj, [attr]: val };
+}
+
 
 /**
  * This function is used to check if a player has won the game.
