@@ -1,4 +1,34 @@
-import { elt, renderSJDON } from "./utils.js";
+import { elt } from "./utils.js";
+import { render, useSJDON} from "./lib/suiweb_1-1.js";
+import { state } from "./game.js";
+
+// Field component - represents a single field on the board
+const Field = ({ id }) => {
+    return [
+        "div",
+        { className: "field" },
+        ...(id ? [["div", { className: `piece player${id}` }]] : [])
+    ];
+};
+
+// Board component - contains the board and the fields
+const Board = ({ board }) => {
+    return [
+        "div",
+        { className: "board", id: "board" },
+        ...board.map(row => [
+            "div",
+            { className: "row" },
+            ...row.map(cell => [Field, { id: cell?.id }])
+        ])
+    ];
+};
+
+// App component
+const App = () => [Board, { board: state.board }];
+
+
+useSJDON(Field, Board, App);
 
 
 /**
