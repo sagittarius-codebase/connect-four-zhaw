@@ -1,7 +1,5 @@
 import { elt } from "./utils.js";
 import { render, useSJDON} from "./lib/suiweb_1-1.js";
-import { state } from "./game.js";
-
 // Field component - represents a single field on the board
 const Field = ({ id }) => {
     return [
@@ -25,7 +23,7 @@ const Board = ({ board }) => {
 };
 
 // App component
-const App = () => [Board, { board: state.board }];
+const App = ( { state }) => [Board, { board: state.board }];
 
 
 useSJDON(Field, Board, App);
@@ -35,10 +33,10 @@ useSJDON(Field, Board, App);
  * renders the board to the app element
  * first clears the app element and then renders the board
  */
-function showBoard() {
+function showBoard(state) {
     const app = document.querySelector(".app")
     app.innerHTML = ""
-    render([App], app)
+    render([App, { state }], app)
 }
 
 /**

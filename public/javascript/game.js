@@ -235,6 +235,4 @@ function saveState() {
     }
 }
 
-export { state };
-
 
