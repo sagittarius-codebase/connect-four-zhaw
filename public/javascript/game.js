@@ -180,46 +180,102 @@ function checkForWinner() {
  */
 function loadState() {
 
-    if (state.board.flat().some(cell => cell !== '')) {
-        if (!confirm("There is already a game in progress. Do you want to load a new game?\nCurrent progress will be lost."))
-            return;
-    }
+    if (!confirmStateLoad()) return;
 
     try {
 
-        const data = JSON.parse(localStorage.getItem('connect4State'));
+        const data = fetchSavedState();
+        if (!data) {
+            console.error("No saved state found.");
+            alert("No saved state found.");
+            return;
+        }
 
-        state = structuredClone(data);
-        state.board = structuredClone(emptyBoardState);
-        showBoard(state);
+        initializeState(data);
+        animateBoardFromState(data);
 
-        let activeAnimations = 0;
-
-        data.board.forEach((row, rowIndex) => {
-            row.forEach((cell, colIndex) => {
-                if (cell !== '') {
-                    activeAnimations++;
-                    setTimeout(() => {
-                        state.board[rowIndex][colIndex] = state.players[cell.id - 1];
-                        const updatedCell = updateCell(state, rowIndex, colIndex);
-                        updateActivePlayer();
-
-                        // Listen for the animation end
-                        updatedCell.addEventListener("animationend", () => {
-                            activeAnimations--;
-                            if (activeAnimations === 0) {
-                                checkForWinner();
-                            }
-                        }, {once: true});
-                    }, (6 - rowIndex) * 100 + colIndex * 200); // Add delays for row and column
-                }
-            });
-        });
     } catch (error) {
-        console.error('Failed to load state from LocalStorage:', error);
-        alert('Failed to load the game state.');
+        handleLoadError(error);
     }
 }
+
+/**
+ * Confirm if the user wants to load a new state if the board is non-empty.
+ * @returns {boolean} true if loading should proceed, false otherwise.
+ */
+function confirmStateLoad() {
+    if (state.board.flat().some(cell => cell !== '')) {
+        return confirm("There is already a game in progress. Do you want to load a new game?\nCurrent progress will be lost.");
+    }
+    return true;
+}
+
+/**
+ * Fetch the saved state from localStorage.
+ * @returns {Object|null} The saved game state, or null if none found.
+ */
+function fetchSavedState() {
+    const rawData = localStorage.getItem('connect4State');
+    return rawData ? JSON.parse(rawData) : null;
+}
+
+/**
+ * Initialize the state with the loaded data.
+ * @param {Object} data - The saved state to initialize.
+ */
+function initializeState(data) {
+    state = structuredClone(data);
+    state.board = structuredClone(emptyBoardState);
+    showBoard(state);
+}
+
+/**
+ * Animate the board state based on the loaded data.
+ * @param {Object} data - The saved state containing board data.
+ */
+function animateBoardFromState(data) {
+    let activeAnimations = 0;
+
+    data.board.forEach((row, rowIndex) => {
+        row.forEach((cell, colIndex) => {
+            if (cell !== '') {
+                activeAnimations++;
+                scheduleAnimation(rowIndex, colIndex, cell, () => {
+                    activeAnimations--;
+                    if (activeAnimations === 0) checkForWinner();
+                });
+            }
+        });
+    });
+}
+
+/**
+ * Schedule an animation for a given cell.
+ * @param {number} rowIndex - The row index of the cell.
+ * @param {number} colIndex - The column index of the cell.
+ * @param {Object} cell - The cell data containing the player's ID.
+ * @param {Function} onAnimationEnd - Callback to execute when the animation ends.
+ */
+function scheduleAnimation(rowIndex, colIndex, cell, onAnimationEnd) {
+    setTimeout(() => {
+        state.board[rowIndex][colIndex] = state.players[cell.id - 1];
+        const updatedCell = updateCell(state, rowIndex, colIndex);
+        updateActivePlayer();
+
+        updatedCell.addEventListener("animationend", onAnimationEnd, { once: true });
+    }, (6 - rowIndex) * 100 + colIndex * 200); // Add delays for row and column
+}
+
+
+/**
+ * Handle errors that occur during the loading process.
+ * @param {Error} error - The error object to handle.
+ */
+function handleLoadError(error) {
+    console.error('Failed to load state from LocalStorage:', error);
+    alert('Failed to load the game state.');
+}
+
 
 /**
  * Save the current state to the local storage
