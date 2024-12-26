@@ -28,12 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * This function is used to set up the event listeners for the board.
+ * This function is used to set up the event listeners for the board (app).
  * It adds a click event listener to the board element and handles the cell click event.
  */
 function setupBoardEventListeners() {
-    const boardElement = document.getElementById("board");
-
+    const boardElement = document.getElementById("app");
+    
     boardElement.addEventListener('click', (event) => {
         const cellDiv = event.target.closest('.field');
         if (!cellDiv) return;
@@ -235,6 +235,6 @@ function saveState() {
     }
 }
 
-
+export { state };
 
 
