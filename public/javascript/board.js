@@ -32,26 +32,13 @@ useSJDON(Field, Board, App);
 
 
 /**
- * This function is used to show the current state of the board.
- * It creates a SJDON representation of the board and renders it to the board element,
- * by calling the renderSJDON function.
- *
- * @param state - the current game state
+ * renders the board to the app element
+ * first clears the app element and then renders the board
  */
-function showBoard(state) {
-    const boardElement = document.getElementById("board");
-    boardElement.innerHTML = ""; // Clear existing board
-
-    const boardSJDON = state.board.map(row => ["div", { class: "row" },
-        ...row.map(cell => ["div", { class: "field" },
-            ...(cell ? ["div", { class: `piece player${cell.id}` }] : [])
-        ])
-    ]);
-
-    // Render only rows inside the existing board element
-    boardSJDON.forEach(rowSJDON => {
-        renderSJDON(rowSJDON, boardElement);
-    });
+function showBoard() {
+    const app = document.querySelector(".app")
+    app.innerHTML = ""
+    render([App], app)
 }
 
 /**
