@@ -1,4 +1,4 @@
-import {showBoard, updateCell, disableBoard, enableBoard} from './board.js';
+import {showBoard, updateCell, disableBoard, enableBoard, disableLoadState, enableLoadState, disableStepBack, enableStepBack} from './board.js';
 import {applyFallAnimation} from './animations.js';
 import {setInList, setInObj, checkIfWinner} from "./utils.js";
 
@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showBoard(state);
     setupBoardEventListeners();
     resetActivePlayer();
+    checkIfSavedState();
 
     const newGameButton = document.getElementById("newGame");
     newGameButton.addEventListener('click', () => handleNewGameClick());
@@ -52,6 +53,20 @@ function setupBoardEventListeners() {
 }
 
 /**
+ * This function is used to check if there is a saved state in the local storage.
+ * If there is no saved state, it disables the load state button.
+ * If there is a saved state, it enables the load state button.
+ */
+function checkIfSavedState() {
+    const savedState = fetchSavedState();
+    if (!savedState) {
+        disableLoadState();
+    } else {
+        enableLoadState();
+    }
+}
+
+/**
  * handles the click event on a cell
  * highest empty cell in the row gets filled if possible
  *
@@ -64,6 +79,7 @@ function handleCellClick(rowIndex, colIndex) {
 
     if (highestEmptyRow !== -1) {
         stateSeq.push(state);
+        enableStepBack();
         let newRow = setInList(state.board[highestEmptyRow], colIndex, state.players[state.currentPlayerIndex]);
         state = setInObj(state, 'board', setInList(state.board, highestEmptyRow, newRow));
         const cell = updateCell(state, highestEmptyRow, colIndex);
@@ -146,18 +162,28 @@ function handleNewGameClick() {
         resetActivePlayer();
 
         enableBoard();
+        disableStepBack();
         document.body.style.overflow = '';
     }, animationDuration);
 }
 
+/**
+ * This function is used to handle the click event on the step back button.
+ * It pops the last state from the state sequence and restores the board to the previous state.
+ * It also updates the active player to the previous player.
+ * If there are no more states in the sequence, it disables the step back button.
+ */
 function handleStepBackClick() {
     if (stateSeq.length > 0) {
         state = stateSeq.pop(); // Restore the last state
         showBoard(state);
         enableBoard();
         updateActivePlayer();
+        if (!stateSeq.length) {
+            disableStepBack();
+        }
     } else {
-        alert("No more steps to undo!");
+        disableStepBack();
     }
 }
 
@@ -216,6 +242,9 @@ function loadState() {
 
         initializeState(data);
         stateSeq = dataSeq;
+        if (stateSeq.length > 0) {
+            enableStepBack();
+        }
         disableBoard();
         animateBoardFromState(data);
         enableBoard();
@@ -321,6 +350,7 @@ function saveState() {
         const serializedStateSeq = JSON.stringify(stateSeq);
         localStorage.setItem('connect4State', serializedState);
         localStorage.setItem('connect4StateSeq', serializedStateSeq);
+        enableLoadState();
         alert('Game state saved successfully!');
     } catch (error) {
         console.error('Failed to save state to LocalStorage:', error);

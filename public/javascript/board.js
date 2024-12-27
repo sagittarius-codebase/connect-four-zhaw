@@ -70,10 +70,45 @@ function disableBoard() {
     app.classList.add("disable-clicks");
 }
 
+/**
+ * Enables the board by removing a class from the app element and the app wrapper
+ */
 function enableBoard() {
     appWrapper.classList.remove("cursor-disabled");
     app.classList.remove("disable-clicks");
 }
 
-export { showBoard, updateCell, disableBoard, enableBoard };
+/**
+ * Disables the load state button by adding a class and setting the disabled attribute
+ */
+function disableLoadState() {
+    document.getElementById("loadState").setAttribute("disabled", "true");
+    document.getElementById("loadState").classList.remove("loadState");
+}
+
+/**
+ * Enables the load state button by removing a class and removing the disabled attribute
+ */
+function enableLoadState() {
+    document.getElementById("loadState").removeAttribute("disabled");
+    document.getElementById("loadState").classList.add("loadState");
+}
+
+/**
+ * Disables the step back button by adding a class and setting the disabled attribute
+ */
+function disableStepBack() {
+    document.getElementById("stepBack").setAttribute("disabled", "true");
+    document.getElementById("stepBack").classList.remove("stepBack");
+}
+
+/**
+ * Enables the step back button by removing a class and removing the disabled attribute
+ */
+function enableStepBack() {
+    document.getElementById("stepBack").removeAttribute("disabled");
+    document.getElementById("stepBack").classList.add("stepBack");
+}
+
+export { showBoard, updateCell, disableBoard, enableBoard , disableLoadState, enableLoadState, disableStepBack, enableStepBack};
 
