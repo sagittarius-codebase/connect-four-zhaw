@@ -23,50 +23,58 @@
     width: 166px;
 }
 
-#newGame {
+.newGame {
     background-color: var(--color-button);
     border: 5px solid var(--color-newGame-button);
     color: var(--color-button-text);
 }
 
-#newGame:hover {
+.newGame:hover {
     background-color: var(--color-newGame-button);
     box-shadow: 0 0 30px var(--color-newGame-button-shadow);
     color: var(--color-button-hover-text);
 }
 
-#stepBack {
+.stepBack {
     background-color: var(--color-button);
     border: 5px solid var(--color-stepBack-button);
     color: var(--color-button-text);
 }
 
-#stepBack:hover {
+.stepBack:hover {
     background-color: var(--color-stepBack-button);
     box-shadow: 0 0 30px var(--color-stepBack-button-shadow);
     color: var(--color-button-hover-text);
 }
 
-#loadState {
+.loadState {
     background-color: var(--color-button);
     border: 5px solid var(--color-loadState-button);
     color: var(--color-button-text);
 }
 
-#loadState:hover {
+.loadState:hover {
     background-color: var(--color-loadState-button);
     box-shadow: 0 0 30px var(--color-loadState-button-shadow);
     color: var(--color-button-hover-text);
 }
 
-#saveState {
+.saveState {
     background-color: var(--color-button);
     border: 5px solid var(--color-saveState-button);
     color: var(--color-button-text);
 }
 
-#saveState:hover {
+.saveState:hover {
     background-color: var(--color-saveState-button);
     box-shadow: 0 0 30px var(--color-saveState-button-shadow);
     color: var(--color-button-hover-text);
+}
+
+button:disabled {
+    background-color: var(--color-disabled-button);
+    border: 5px solid var(--color-disabled-button-border);
+    color: var(--color-button-text);
+    box-shadow: none;
+    cursor: not-allowed;
 }

@@ -19,6 +19,8 @@
     --color-loadState-button-shadow: #BF5AF2AA;
     --color-saveState-button: #30D158;
     --color-saveState-button-shadow: #30D158AA;
+    --color-disabled-button: #3A3A3C;
+    --color-disabled-button-border: #6E6E73;
 
 
     /* Number of rows */
