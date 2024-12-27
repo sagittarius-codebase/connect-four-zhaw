@@ -60,7 +60,7 @@ function setInObj(obj, attr, val) {
  *
  * @param player - the player to check for
  * @param state - the current game state
- * @returns {boolean} - true if the player has won, false otherwise
+ * @returns {array} - an array of the winning cells if a player has won, otherwise an empty array
  */
 function checkIfWinner(player, state) {
     const board = state.board;
@@ -69,37 +69,41 @@ function checkIfWinner(player, state) {
 
     // Helper to check 4 pieces in a direction
     function checkDirection(row, col, rowDir, colDir) {
-        let count = 0;
+        let cells = []
 
         for (let i = 0; i < 4; i++) {
             const r = row + i * rowDir;
             const c = col + i * colDir;
 
             if (r >= 0 && r < rows && c >= 0 && c < cols && board[r][c] === player) {
-                count++;
+                cells.push({ r, c });
             } else {
                 break;
             }
         }
-
-        return count === 4;
+        
+        return cells.length === 4 ? cells : [];
     }
 
     // Check all cells for potential winning directions
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
-            if (
-                checkDirection(row, col, 0, 1) || // Horizontal
-                checkDirection(row, col, 1, 0) || // Vertical
-                checkDirection(row, col, 1, 1) || // Diagonal down-right
-                checkDirection(row, col, 1, -1)   // Diagonal down-left
-            ) {
-                return true;
+            const directions = [
+                checkDirection(row, col, 0, 1), // Horizontal
+                checkDirection(row, col, 1, 0), // Vertical
+                checkDirection(row, col, 1, 1), // Diagonal down-right
+                checkDirection(row, col, 1, -1), // Diagonal down-left
+            ];
+            
+            for (const winnerCells of directions) {
+                if (winnerCells.length > 0) {
+                    return winnerCells;
+                }
             }
         }
     }
 
-    return false;
+    return [];
 }
 
 export { elt, setInList, setInObj, checkIfWinner };
