@@ -28,11 +28,11 @@
     --number-rows: 7;
 
     /* Sizes */
-    --board-size: 47vw; /* Default for desktop */
+    --board-size: 45vw; /* Default for desktop */
 
     @media (max-width: 1280px) {
         /* For tablets */
-        --board-size: 60vw;
+        --board-size: 55vw;
 
     }
 
