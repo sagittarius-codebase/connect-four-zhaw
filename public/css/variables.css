@@ -2,10 +2,10 @@
     /* Colors */
     --color-background: #101010;
     --color-grid-line: #BBBBBB;
-    --color-player-one-dark: #1e70cc;
-    --color-player-one-light: #4fa6f7;
-    --color-player-two-dark: #cc5b0d;
-    --color-player-two-light: #ffa64d;
+    --color-player-one-dark: #1E70CC;
+    --color-player-one-light: #4FA6F7;
+    --color-player-two-dark: #CC5B0D;
+    --color-player-two-light: #FFA64D;
     --color-winner-cell: #BBBBBB;
 
     --color-button: transparent;
@@ -28,8 +28,29 @@
     --number-rows: 7;
 
     /* Sizes */
-    --board-size: 40vw;
+    --board-size: 45vw; /* Default for desktop */
+
+    @media (max-width: 1024px) {
+        /* For tablets */
+        --board-size: 70vw;
+
+    }
+
+    @media (max-width: 768px) {
+        /* For small tablets or large phones */
+        --board-size: 80vw;
+
+    }
+
+    @media (max-width: 480px) {
+        /* For mobile */
+        --board-size: 90vw;
+
+    }
+
     --field-size: calc(var(--board-size) / var(--number-rows));
     --piece-size: calc(var(--field-size) - 2vh);
     --size-piece-margin: calc((var(--field-size) - var(--piece-size)) / 2);
+
+
 }
