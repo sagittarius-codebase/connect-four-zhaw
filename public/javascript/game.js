@@ -1,6 +1,6 @@
 import {showBoard, updateCell} from './board.js';
 import {applyFallAnimation} from './animations.js';
-import {checkIfWinner} from "./utils.js";
+import {setInObj, checkIfWinner} from "./utils.js";
 
 const emptyBoardState = Array(6).fill(null).map(() => Array(7).fill(''));
 
@@ -12,7 +12,7 @@ let state = {
 };
 
 // the game state sequence
-let sateSeq = [];
+let stateSeq = [];
 
 // Function to initialize the board on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const newGameButton = document.getElementById("newGame");
     newGameButton.addEventListener('click', () => handleNewGameClick());
+    
+    const stepBackButton = document.getElementById("stepBack");
+    stepBackButton.addEventListener('click', () => handleStepBackClick());
 
     const loadStateButton = document.getElementById("loadState");
     loadStateButton.addEventListener('click', () => loadState());
@@ -66,8 +69,11 @@ function handleCellClick(rowIndex, colIndex) {
         cell.addEventListener("animationend", () => {
             checkForWinner();
         }, { once: true });
-
-        state.currentPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
+        
+        stateSeq.push(state);
+        let nextPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
+        state = setInObj(state, 'currentPlayerIndex', nextPlayerIndex);
+        
         updateActivePlayer();
     }
 }
@@ -141,6 +147,16 @@ function handleNewGameClick() {
         boardElement.classList.remove('disable-clicks');
         document.body.style.overflow = '';
     }, animationDuration);
+}
+
+function handleStepBackClick() {
+    if (stateSeq.length > 0) {
+        state = stateSeq.pop(); // Restore the last state
+        showBoard(state);
+        updateActivePlayer();
+    } else {
+        alert("No more steps to undo!");
+    }
 }
 
 /**
