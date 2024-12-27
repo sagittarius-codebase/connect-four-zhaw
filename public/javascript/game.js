@@ -213,12 +213,24 @@ function resetActivePlayer() {
 function checkForWinner() {
 
     for (let i = 0; i < 2; i++) {
-        if (checkIfWinner(state.players[i], state)) {
-            alert(`Player ${state.players[i].id} wins!`);
+        let winnerCells = checkIfWinner(state.players[i], state);
+        if (winnerCells.length > 0) {
+            highlightWinnerCells(winnerCells);
             disableBoard();
+            alert(`Player {state.players[i].id} wins!`);
             return;
         }
     }
+}
+
+function highlightWinnerCells(winnerCells) {
+    console.log("Winner cells ", winnerCells);
+    winnerCells.forEach(({ r, c }) => {
+        const cellElement = document.getElementById(`cell-${r}-${c}`);
+        if (cellElement) {
+            cellElement.setAttribute("data-winner", "true");
+        }
+    });
 }
 
 /**
