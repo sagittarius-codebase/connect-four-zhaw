@@ -102,4 +102,4 @@ function checkIfWinner(player, state) {
     return false;
 }
 
-export { elt, checkIfWinner };
+export { elt, setInList, setInObj, checkIfWinner };
