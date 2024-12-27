@@ -28,21 +28,21 @@
     --number-rows: 7;
 
     /* Sizes */
-    --board-size: 45vw; /* Default for desktop */
+    --board-size: 47vw; /* Default for desktop */
+
+    @media (max-width: 1280px) {
+        /* For tablets */
+        --board-size: 60vw;
+
+    }
 
     @media (max-width: 1024px) {
-        /* For tablets */
-        --board-size: 70vw;
+        /* For small tablets or large phones */
+        --board-size: 85vw;
 
     }
 
     @media (max-width: 768px) {
-        /* For small tablets or large phones */
-        --board-size: 80vw;
-
-    }
-
-    @media (max-width: 480px) {
         /* For mobile */
         --board-size: 90vw;
 
