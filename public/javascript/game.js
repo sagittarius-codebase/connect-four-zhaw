@@ -205,6 +205,7 @@ function loadState() {
     try {
 
         const data = fetchSavedState();
+        const dataSeq = fetchSavedStateSeq();
         if (!data) {
             console.error("No saved state found.");
             alert("No saved state found.");
@@ -212,6 +213,7 @@ function loadState() {
         }
 
         initializeState(data);
+        stateSeq = dataSeq;
         animateBoardFromState(data);
 
     } catch (error) {
@@ -236,6 +238,15 @@ function confirmStateLoad() {
  */
 function fetchSavedState() {
     const rawData = localStorage.getItem('connect4State');
+    return rawData ? JSON.parse(rawData) : null;
+}
+
+/**
+ * Fetch the saved state sequence from localStorage.
+ * @returns {any|null} The saved game state sequence, or null if none found.
+ */
+function fetchSavedStateSeq() {
+    const rawData = localStorage.getItem('connect4StateSeq');
     return rawData ? JSON.parse(rawData) : null;
 }
 
@@ -303,7 +314,9 @@ function handleLoadError(error) {
 function saveState() {
     try {
         const serializedState = JSON.stringify(state);
+        const serializedStateSeq = JSON.stringify(stateSeq);
         localStorage.setItem('connect4State', serializedState);
+        localStorage.setItem('connect4StateSeq', serializedStateSeq);
         alert('Game state saved successfully!');
     } catch (error) {
         console.error('Failed to save state to LocalStorage:', error);
