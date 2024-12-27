@@ -30,3 +30,7 @@
     filter: brightness(1.05);
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
 }
+
+[data-winner="true"] {
+    background-color: var(--color-winner-cell);
+}
