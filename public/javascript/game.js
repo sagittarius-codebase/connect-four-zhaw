@@ -1,4 +1,13 @@
-import {showBoard, updateCell, disableBoard, enableBoard, disableLoadState, enableLoadState, disableStepBack, enableStepBack} from './board.js';
+import {
+    showBoard,
+    updateCell,
+    disableBoard,
+    enableBoard,
+    disableLoadState,
+    enableLoadState,
+    disableStepBack,
+    enableStepBack
+} from './board.js';
 import {applyFallAnimation} from './animations.js';
 import {setInList, setInObj, checkIfWinner} from "./utils.js";
 
@@ -23,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const newGameButton = document.getElementById("newGame");
     newGameButton.addEventListener('click', () => handleNewGameClick());
-    
+
     const stepBackButton = document.getElementById("stepBack");
     stepBackButton.addEventListener('click', () => handleStepBackClick());
 
@@ -40,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function setupBoardEventListeners() {
     const boardElement = document.getElementById("app");
-    
+
     boardElement.addEventListener('click', (event) => {
         const cellDiv = event.target.closest('.field');
         if (!cellDiv) return;
@@ -83,14 +92,14 @@ function handleCellClick(rowIndex, colIndex) {
         let newRow = setInList(state.board[highestEmptyRow], colIndex, state.players[state.currentPlayerIndex]);
         state = setInObj(state, 'board', setInList(state.board, highestEmptyRow, newRow));
         const cell = updateCell(state, highestEmptyRow, colIndex);
-        
+
         cell.addEventListener("animationend", () => {
             checkForWinner();
-        }, { once: true });
-        
+        }, {once: true});
+
         let nextPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
         state = setInObj(state, 'currentPlayerIndex', nextPlayerIndex);
-        
+
         updateActivePlayer();
     }
 }
@@ -225,7 +234,7 @@ function checkForWinner() {
 
 function highlightWinnerCells(winnerCells) {
     console.log("Winner cells ", winnerCells);
-    winnerCells.forEach(({ r, c }) => {
+    winnerCells.forEach(({r, c}) => {
         const cellElement = document.getElementById(`cell-${r}-${c}`);
         if (cellElement) {
             cellElement.setAttribute("data-winner", "true");
@@ -338,7 +347,7 @@ function scheduleAnimation(rowIndex, colIndex, cell, onAnimationEnd) {
         const updatedCell = updateCell(state, rowIndex, colIndex);
         updateActivePlayer();
 
-        updatedCell.addEventListener("animationend", onAnimationEnd, { once: true });
+        updatedCell.addEventListener("animationend", onAnimationEnd, {once: true});
     }, (6 - rowIndex) * 100 + colIndex * 200); // Add delays for row and column
 }
 

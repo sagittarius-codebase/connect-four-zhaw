@@ -19,4 +19,4 @@ function applyFallAnimation(pieces, colIndex, rowIndex, adjustedDelay) {
     }
 }
 
-export { applyFallAnimation };
+export {applyFallAnimation};

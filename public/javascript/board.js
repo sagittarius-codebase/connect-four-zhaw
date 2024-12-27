@@ -1,31 +1,32 @@
-import { elt } from "./utils.js";
-import { render, useSJDON} from "./lib/suiweb_1-1.js";
+import {elt} from "./utils.js";
+import {render, useSJDON} from "./lib/suiweb_1-1.js";
 // Field component - represents a single field on the board
-const Field = ({ id, rowIndex, colIndex }) => {
+const Field = ({id, rowIndex, colIndex}) => {
     return [
         "div",
-        { className: "field" ,
-          id: `cell-${rowIndex}-${colIndex}`,
+        {
+            className: "field",
+            id: `cell-${rowIndex}-${colIndex}`,
         },
-        ...(id ? [["div", { className: `piece player${id}` }]] : [])
+        ...(id ? [["div", {className: `piece player${id}`}]] : [])
     ];
 };
 
 // Board component - contains the board and the fields
-const Board = ({ board }) => {
+const Board = ({board}) => {
     return [
         "div",
-        { className: "board", id: "board" },
+        {className: "board", id: "board"},
         ...board.map((row, rowIndex) => [
             "div",
-            { className: "row" },
-            ...row.map(((cell, colIndex) => [Field, { id: cell?.id, rowIndex, colIndex }]))
+            {className: "row"},
+            ...row.map(((cell, colIndex) => [Field, {id: cell?.id, rowIndex, colIndex}]))
         ])
     ];
 };
 
 // App component
-const App = ( { state }) => [Board, { board: state.board }];
+const App = ({state}) => [Board, {board: state.board}];
 
 useSJDON(Field, Board, App);
 
@@ -40,7 +41,7 @@ const app = document.getElementById("app");
 function showBoard(state) {
     const app = document.querySelector(".app")
     app.innerHTML = ""
-    render([App, { state }], app)
+    render([App, {state}], app)
 }
 
 /**
@@ -57,7 +58,7 @@ function updateCell(state, rowIndex, colIndex) {
 
     const cell = state.board[rowIndex][colIndex];
     if (cell) {
-        const pieceDiv = elt("div", {class: `piece player${cell.id} piece-fall` });
+        const pieceDiv = elt("div", {class: `piece player${cell.id} piece-fall`});
         cellElement.appendChild(pieceDiv);
     }
 
@@ -112,5 +113,14 @@ function enableStepBack() {
     document.getElementById("stepBack").classList.add("stepBack");
 }
 
-export { showBoard, updateCell, disableBoard, enableBoard , disableLoadState, enableLoadState, disableStepBack, enableStepBack};
+export {
+    showBoard,
+    updateCell,
+    disableBoard,
+    enableBoard,
+    disableLoadState,
+    enableLoadState,
+    disableStepBack,
+    enableStepBack
+};
 

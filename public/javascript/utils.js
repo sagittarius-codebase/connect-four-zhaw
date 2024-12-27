@@ -49,7 +49,7 @@ function setInList(lst, idx, val) {
  * @returns {Object} A new object with the updated attribute
  */
 function setInObj(obj, attr, val) {
-    return { ...obj, [attr]: val };
+    return {...obj, [attr]: val};
 }
 
 
@@ -76,12 +76,12 @@ function checkIfWinner(player, state) {
             const c = col + i * colDir;
 
             if (r >= 0 && r < rows && c >= 0 && c < cols && board[r][c] === player) {
-                cells.push({ r, c });
+                cells.push({r, c});
             } else {
                 break;
             }
         }
-        
+
         return cells.length === 4 ? cells : [];
     }
 
@@ -94,7 +94,7 @@ function checkIfWinner(player, state) {
                 checkDirection(row, col, 1, 1), // Diagonal down-right
                 checkDirection(row, col, 1, -1), // Diagonal down-left
             ];
-            
+
             for (const winnerCells of directions) {
                 if (winnerCells.length > 0) {
                     return winnerCells;
@@ -106,4 +106,4 @@ function checkIfWinner(player, state) {
     return [];
 }
 
-export { elt, setInList, setInObj, checkIfWinner };
+export {elt, setInList, setInObj, checkIfWinner};
