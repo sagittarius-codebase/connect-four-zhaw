@@ -23,7 +23,19 @@ div {
 }
 
 .game-controls {
+    align-items: center;
     display: flex;
-    gap: 4vw;
+    flex-direction: column;
+    gap: 1vw;
+}
+
+.game-management {
+    display: flex;
+    gap: 3vw;
+}
+
+.state-management {
+    display: flex;
+    gap: 3vw;
 }
 
