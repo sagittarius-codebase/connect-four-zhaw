@@ -25,9 +25,11 @@ const Board = ({ board }) => {
 // App component
 const App = ( { state }) => [Board, { board: state.board }];
 
-
 useSJDON(Field, Board, App);
 
+
+const appWrapper = document.querySelector(".app-disabled-wrapper");
+const app = document.getElementById("app");
 
 /**
  * renders the board to the app element
@@ -60,5 +62,18 @@ function updateCell(state, rowIndex, colIndex) {
     return cellElement;
 }
 
-export { showBoard, updateCell };
+/**
+ * Disables the board by adding a class to the app element and the app wrapper
+ */
+function disableBoard() {
+    appWrapper.classList.add("cursor-disabled");
+    app.classList.add("disable-clicks");
+}
+
+function enableBoard() {
+    appWrapper.classList.remove("cursor-disabled");
+    app.classList.remove("disable-clicks");
+}
+
+export { showBoard, updateCell, disableBoard, enableBoard };
 

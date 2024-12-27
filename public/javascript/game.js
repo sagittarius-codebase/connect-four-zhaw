@@ -1,4 +1,4 @@
-import {showBoard, updateCell} from './board.js';
+import {showBoard, updateCell, disableBoard, enableBoard} from './board.js';
 import {applyFallAnimation} from './animations.js';
 import {setInList, setInObj, checkIfWinner} from "./utils.js";
 
@@ -130,7 +130,7 @@ function handleNewGameClick() {
     const boardElement = document.getElementById("board");
 
     // Disable all clicks and prevent scrolling during the animation
-    boardElement.classList.add('disable-clicks');
+    disableBoard();
     document.body.style.overflow = 'hidden';
 
     let adjustedDelay = emptyBoard(boardElement);
@@ -145,7 +145,7 @@ function handleNewGameClick() {
         showBoard(state);
         resetActivePlayer();
 
-        boardElement.classList.remove('disable-clicks');
+        enableBoard();
         document.body.style.overflow = '';
     }, animationDuration);
 }
@@ -154,6 +154,7 @@ function handleStepBackClick() {
     if (stateSeq.length > 0) {
         state = stateSeq.pop(); // Restore the last state
         showBoard(state);
+        enableBoard();
         updateActivePlayer();
     } else {
         alert("No more steps to undo!");
@@ -188,6 +189,7 @@ function checkForWinner() {
     for (let i = 0; i < 2; i++) {
         if (checkIfWinner(state.players[i], state)) {
             alert(`Player ${state.players[i].id} wins!`);
+            disableBoard();
             return;
         }
     }
@@ -214,7 +216,9 @@ function loadState() {
 
         initializeState(data);
         stateSeq = dataSeq;
+        disableBoard();
         animateBoardFromState(data);
+        enableBoard();
 
     } catch (error) {
         handleLoadError(error);

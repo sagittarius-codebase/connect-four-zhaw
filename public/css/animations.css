@@ -37,6 +37,10 @@
     animation: fall-out 0.7s ease-in forwards;
 }
 
+.cursor-disabled {
+    cursor: not-allowed;
+}
+
 .disable-clicks {
     pointer-events: none;
 }
