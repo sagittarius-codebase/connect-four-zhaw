@@ -13,6 +13,8 @@
     /* specific buttons */
     --color-newGame-button: #FF453A;
     --color-newGame-button-shadow: #FF453AAA;
+    --color-stepBack-button: #FF9F0A;
+    --color-stepBack-button-shadow: #FF9F0AAA;
     --color-loadState-button: #BF5AF2;
     --color-loadState-button-shadow: #BF5AF2AA;
     --color-saveState-button: #30D158;

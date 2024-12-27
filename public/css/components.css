@@ -13,7 +13,7 @@
     font-weight: bold;
     margin: 0.75em 0;
     min-width: 160px;
-    padding: 0.5em;
+    padding: 0.3em;
     text-align: center;
     width: 15vw;
 }
@@ -31,6 +31,18 @@
 #newGame:hover {
     background-color: var(--color-newGame-button);
     box-shadow: 0 0 30px var(--color-newGame-button-shadow);
+    color: var(--color-button-hover-text);
+}
+
+#stepBack {
+    background-color: var(--color-button);
+    border: 5px solid var(--color-stepBack-button);
+    color: var(--color-button-text);
+}
+
+#stepBack:hover {
+    background-color: var(--color-stepBack-button);
+    box-shadow: 0 0 30px var(--color-stepBack-button-shadow);
     color: var(--color-button-hover-text);
 }
 
