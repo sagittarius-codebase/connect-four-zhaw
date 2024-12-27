@@ -11,6 +11,9 @@ let state = {
     currentPlayerIndex: 1
 };
 
+// the game state sequence
+let sateSeq = [];
+
 // Function to initialize the board on page load
 document.addEventListener('DOMContentLoaded', () => {
     showBoard(state);
