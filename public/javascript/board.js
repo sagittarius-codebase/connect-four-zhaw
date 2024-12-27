@@ -1,10 +1,12 @@
 import { elt } from "./utils.js";
 import { render, useSJDON} from "./lib/suiweb_1-1.js";
 // Field component - represents a single field on the board
-const Field = ({ id }) => {
+const Field = ({ id, rowIndex, colIndex }) => {
     return [
         "div",
-        { className: "field" },
+        { className: "field" ,
+          id: `cell-${rowIndex}-${colIndex}`,
+        },
         ...(id ? [["div", { className: `piece player${id}` }]] : [])
     ];
 };
@@ -14,10 +16,10 @@ const Board = ({ board }) => {
     return [
         "div",
         { className: "board", id: "board" },
-        ...board.map(row => [
+        ...board.map((row, rowIndex) => [
             "div",
             { className: "row" },
-            ...row.map(cell => [Field, { id: cell?.id }])
+            ...row.map(((cell, colIndex) => [Field, { id: cell?.id, rowIndex, colIndex }]))
         ])
     ];
 };
