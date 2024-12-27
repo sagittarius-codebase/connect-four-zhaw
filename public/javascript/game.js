@@ -1,6 +1,6 @@
 import {showBoard, updateCell} from './board.js';
 import {applyFallAnimation} from './animations.js';
-import {setInObj, checkIfWinner} from "./utils.js";
+import {setInList, setInObj, checkIfWinner} from "./utils.js";
 
 const emptyBoardState = Array(6).fill(null).map(() => Array(7).fill(''));
 
@@ -63,14 +63,15 @@ function handleCellClick(rowIndex, colIndex) {
     const highestEmptyRow = getHighestEmptyRow(colIndex);
 
     if (highestEmptyRow !== -1) {
-        state.board[highestEmptyRow][colIndex] = state.players[state.currentPlayerIndex];
+        stateSeq.push(state);
+        let newRow = setInList(state.board[highestEmptyRow], colIndex, state.players[state.currentPlayerIndex]);
+        state = setInObj(state, 'board', setInList(state.board, highestEmptyRow, newRow));
         const cell = updateCell(state, highestEmptyRow, colIndex);
         
         cell.addEventListener("animationend", () => {
             checkForWinner();
         }, { once: true });
         
-        stateSeq.push(state);
         let nextPlayerIndex = state.currentPlayerIndex === 0 ? 1 : 0;
         state = setInObj(state, 'currentPlayerIndex', nextPlayerIndex);
         
