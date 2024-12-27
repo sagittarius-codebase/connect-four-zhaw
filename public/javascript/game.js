@@ -139,7 +139,7 @@ function handleNewGameClick() {
     const animationDuration = 1000 + adjustedDelay;
     setTimeout(() => {
         state.board = structuredClone(emptyBoardState);
-        state.currentPlayerIndex = 1;
+        stateSeq = [];
         boardElement.innerHTML = '';
 
         showBoard(state);
