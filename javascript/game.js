@@ -226,7 +226,7 @@ function checkForWinner() {
         if (winnerCells.length > 0) {
             highlightWinnerCells(winnerCells);
             disableBoard();
-            alert(`Player {state.players[i].id} wins!`);
+            alert(`Player ${state.players[i].id} wins!`);
             return;
         }
     }
